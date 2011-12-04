@@ -15,8 +15,8 @@ public class Coordonnees {
 	public void ajouter(int minute, Navire navire) {
 		Donnees donnee = null;
 		
-		if (lesDonnees.size() > 0) {
-			int idx = minute==0?0:(minute-1);
+		if (lesDonnees.size() > minute) {
+			int idx = minute==0?0:minute;
 			donnee = lesDonnees.get(idx);
 		} else {
 			donnee = new Donnees();

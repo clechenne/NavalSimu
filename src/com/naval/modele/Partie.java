@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Partie {
-	Coordonnees coords;
-	List<Navire> navires;
-	int minute = 0;
+	public Coordonnees coords;
+	public List<Navire> navires;
+	public int minute = 0;
 	int heure;
 	int minuteDebut;
 	String nom;
@@ -67,6 +67,11 @@ public class Partie {
 				writer.write(sb.toString()+ "\r\n");
 			}
 		}
+	}
+
+	public Navire getNavire(int n) {
+		// TODO Auto-generated method stub
+		return navires.get(n);
 	}
 	
 }
