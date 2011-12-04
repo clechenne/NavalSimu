@@ -1,8 +1,9 @@
 package com.naval.modele;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
-public class Navire {
+public class Navire implements Serializable{
 	public int id; // 0 to n
 	public double x;
 	public double y;

@@ -1,9 +1,14 @@
 package com.naval.modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Coordonnees {
+public class Coordonnees implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -418993151526731233L;
 	int nombreNavires = 0;
 	List<Donnees> lesDonnees;
 	

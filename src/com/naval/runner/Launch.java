@@ -1,7 +1,7 @@
 package com.naval.runner;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -17,27 +17,35 @@ import com.naval.modele.Coordonnees;
 import com.naval.modele.Donnees;
 import com.naval.modele.Navire;
 import com.naval.modele.Partie;
+import com.naval.report.Report;
 
 public class Launch {
 
 	/**
 	 * @param args
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws IOException {
-		FileReader fr = new FileReader("test.partie");
+	public static void main(String[] args) throws IOException, ClassNotFoundException {	
 		
-		Partie partie = Partie.creer(fr);
-		
-		partie.executerTour();
-		partie.executerTour();
-		partie.executerTour();
-		partie.executerTour();
-		partie.executerTour();
+		Partie partie = Partie.load("GameOne");
 				
+		partie.executerTour();
+
 		drawCharts(partie);
+		
+		StringWriter sw = new StringWriter();
+		Report.dump(sw);
+		
+		System.out.println(sw.toString());
+		
+		partie.save();
+		
 	}
 
+	/**
+	 * @param partie
+	 */
 	private static void drawCharts(Partie partie) {
 		Coordonnees coords = partie.coords;
 		
@@ -56,7 +64,7 @@ public class Launch {
 
 		
 		JFreeChart chart = ChartFactory.createXYLineChart(
-				"Map", // Title
+				"Map turn " + partie.getHeureMinute() , // Title
 				"x-axis", // x-axis Label
 				"y-axis", // y-axis Label
 				dataset, // Dataset
@@ -65,20 +73,31 @@ public class Launch {
 				true, // Use tooltips
 				false // Configure chart to generate URLs?
 				);
-		
+				
 		XYPlot plot = chart.getXYPlot();
-		XYDotRenderer r = new XYDotRenderer();
-		r.setDotHeight(4);
-		r.setDotWidth(4);
-        plot.setRenderer(r);
-
-		//XYItemRenderer rend = chart.getXYPlot().getRenderer();
-//		java.awt.geom.Ellipse2D.Double double1 = new java.awt.geom.Ellipse2D.Double(-4D, -4D, 8D, 8D);
-//        XYLineAndShapeRenderer xylineandshaperenderer = (XYLineAndShapeRenderer)rend;
-//        xylineandshaperenderer.setBaseShapesVisible(true);
 		
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, true);
+        renderer.setSeriesShapesVisible(0, true);
+        
+        renderer.setSeriesLinesVisible(1, true);
+        renderer.setSeriesShapesVisible(1, true);
+        
+        plot.setRenderer(renderer);
+        
+//		XYDotRenderer r = new XYDotRenderer();
+//		r.setDotHeight(4);
+//		r.setDotWidth(4);
+//        plot.setRenderer(r);
+	
 		ChartFrame frame=new ChartFrame("Naval simulation",chart);
 	    frame.pack();
-	    frame.setVisible(true);		    
+	    frame.setVisible(true);
+	    
+//	    try {
+//	    	ChartUtilities.saveChartAsJPEG(new File(".\\chart.jpg"), chart, 500, 300);
+//	    	} catch (IOException e) {
+//	    	System.err.println("Problem occurred creating chart.");
+//	    	}
 	}
 }
