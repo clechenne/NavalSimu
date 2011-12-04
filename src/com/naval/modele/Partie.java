@@ -55,7 +55,7 @@ public class Partie {
 	
 	public void report(Writer writer) throws IOException {
 		for (int m=0; m < minute; m++) {
-			Donnees donnees = coords.donneesPour(minute);
+			Donnees donnees = coords.donneesPour(m);
 			for (Navire n : navires) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(donnees.minute);
