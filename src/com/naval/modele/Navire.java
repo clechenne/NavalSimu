@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.StringTokenizer;
 
 public class Navire implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5938902540751741229L;
 	public int id; // 0 to n
 	public double x;
 	public double y;
@@ -13,9 +17,12 @@ public class Navire implements Serializable{
 	
 	public String nationalite;
 	public String nom;
-	
 	public boolean detecte;
+	
+	public String idJoueur;
+	public String leader;
 	private String division;
+	
 	
 	public Navire(String description) {
 		
@@ -33,6 +40,8 @@ public class Navire implements Serializable{
 		y = Double.parseDouble(st.nextToken());
 		vitesse = Float.parseFloat(st.nextToken());
 		cap = Integer.parseInt(st.nextToken());
+		idJoueur = st.nextToken();
+		taille = Integer.parseInt(st.nextToken());
 	}
 
 	public void bouge() {

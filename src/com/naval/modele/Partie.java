@@ -64,6 +64,7 @@ public class Partie implements Serializable {
 
 	public void executerTour() throws IOException {
 		
+		// TODO : revoir car les ordres de mvt s'activent à la fin du tour.
 		prendreEnCompteLesOrdres(); 
 		
 		for (Navire n : navires) {
@@ -92,11 +93,12 @@ public class Partie implements Serializable {
 		for (Ordre o : ordres) {
 			Navire n = navires.get(o.idNavire);
 			
+			// 2.3.2.2 Giration 
 			if (o.modificationCap != 0) {
 				Report.add(n.nom + " modification de cap:" + (n.cap + o.modificationCap));
 				n.cap += o.modificationCap;
 			}
-			
+			// 2.3.1.3 Accélération et décélération
 			if (o.acceleration != 0) {
 				Report.add(n.nom + " modification de vitesse:" + (n.vitesse + o.acceleration));
 				n.vitesse += o.acceleration;
