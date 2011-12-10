@@ -3,7 +3,7 @@ package com.naval.modele;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
-public class Navire implements Serializable{
+public class Navire implements Serializable {
 	/**
 	 * 
 	 */
@@ -21,6 +21,8 @@ public class Navire implements Serializable{
 	
 	public String idJoueur;
 	public String leader;
+	public int idjoueur;
+	
 	private String division;
 	
 	

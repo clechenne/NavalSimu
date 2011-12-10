@@ -16,6 +16,8 @@ import java.util.Formatter;
 import java.util.List;
 
 import com.naval.ordres.Ordre;
+import com.naval.outils.Config;
+import com.naval.outils.Distance;
 import com.naval.report.Report;
 
 public class Partie implements Serializable {
@@ -25,15 +27,18 @@ public class Partie implements Serializable {
 	private static final long serialVersionUID = -6793761344976479155L;
 	public Coordonnees coords;
 	public List<Navire> navires;
+	public List<Joueur> joueurs;
 	public int minute = 0;
 	public String nom;
 	public List<String> messages = new ArrayList<String>();
+	public int visibilite;
 	
 	int heure;
 	int minuteReelle;
 		
 	Partie() {
 		navires = new ArrayList<Navire>();
+		joueurs = new ArrayList<Joueur>();
 		
 	}
 	
@@ -45,11 +50,23 @@ public class Partie implements Serializable {
 		
 		// Nom de la partie
 		partie.nom = br.readLine();
-		// Heure et minute
-		partie.heure = Integer.parseInt(br.readLine());
-		partie.minuteReelle = Integer.parseInt(br.readLine());
 		
-		int nbNavires = Integer.parseInt(br.readLine());
+		// visibilite 
+		partie.visibilite = Integer.parseInt(getLine(br));
+		
+		// Heure et minute
+		partie.heure = Integer.parseInt(getLine(br));
+		partie.minuteReelle = Integer.parseInt(getLine(br));
+		
+		// lecture des joueurs
+		int nbJoueurs = Integer.parseInt(getLine(br));
+		for (int i=0; i < nbJoueurs; i++) {
+			Joueur j = new Joueur(br.readLine());
+			partie.joueurs.add(j);
+		}
+		
+		// lecture des navires		
+		int nbNavires = Integer.parseInt(getLine(br));
 		
 		partie.coords = new Coordonnees(nbNavires);
 		
@@ -60,6 +77,22 @@ public class Partie implements Serializable {
 		}
 		
 		return partie;
+	}
+
+	/**
+	 * Permet de sauter les lignes de commentaires
+	 * @param br
+	 * @return
+	 * @throws IOException
+	 */
+	private static String getLine(BufferedReader br) throws IOException {
+		String line = br.readLine();
+		
+		if (line.indexOf("#") != -1) {
+			return br.readLine();
+		}
+		
+		return line;
 	}
 
 	public void executerTour() throws IOException {
@@ -80,9 +113,22 @@ public class Partie implements Serializable {
 		} else {
 			minuteReelle++;
 		}
-
+		
+		estimerDistance();
 	}
 	
+	private void estimerDistance() {
+		for (Navire n : navires) {
+			for (Navire p : navires) {
+				if (n.id != p.id) {
+					int distance = (int) Distance.calculer(n.x, n.y, p.x, p.y);
+					System.out.println(n.nom + "->" + p.nom + "=" + distance + " yards");
+				}
+			}
+		}
+		
+	}
+
 	private void prendreEnCompteLesOrdres() throws FileNotFoundException,
 			IOException {
 		// lectures des ordres
@@ -130,7 +176,7 @@ public class Partie implements Serializable {
 	public static Partie load(String nom) throws IOException, ClassNotFoundException {
 		Partie partie = null;
 		
-		FileInputStream fis = new FileInputStream(nom + ".serial");
+		FileInputStream fis = new FileInputStream(nom);
 		// création d'un "flux objet" avec le flux fichier
 		ObjectInputStream ois= new ObjectInputStream(fis);
 		try {	
@@ -151,7 +197,7 @@ public class Partie implements Serializable {
 	}
 	
 	public void save() throws IOException {
-		FileOutputStream fos = new FileOutputStream(nom + ".serial");
+		FileOutputStream fos = new FileOutputStream(Config.getRepTravail() + nom + ".serial");
 		
 		ObjectOutputStream oos= new ObjectOutputStream(fos);
 		
