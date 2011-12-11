@@ -12,7 +12,8 @@ public class Ordre {
 	public int acceleration;
 	public int codeManoeuvre;
 	public int idNavire;
-	
+        public int minute=0;
+    
 	public static List<Ordre> lire(Reader reader) throws IOException {
 		BufferedReader br = new BufferedReader(reader);
 		
@@ -25,6 +26,7 @@ public class Ordre {
 			
 			StringTokenizer st = new StringTokenizer(line, "#");
 			
+                        o.minute = Integer.parseInt(st.nextToken());
 			o.idNavire = Integer.parseInt(st.nextToken());
 			o.modificationCap = Integer.parseInt(st.nextToken());
 			o.acceleration = Integer.parseInt(st.nextToken());
@@ -34,4 +36,14 @@ public class Ordre {
 		}
 		return ordres;
 	}
+
+    public Ordre() {
+        
+    }
+    
+    public Ordre(int id, int minute) {
+        this.idNavire = id;
+        this.minute = minute;
+    }
+
 }

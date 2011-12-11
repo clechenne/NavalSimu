@@ -44,7 +44,9 @@ import com.naval.modele.Coordonnees;
 import com.naval.modele.Donnees;
 import com.naval.modele.Navire;
 import com.naval.modele.Partie;
+import com.naval.ordres.Ordre;
 import com.naval.outils.Config;
+import java.util.ArrayList;
 
 public class Gui extends JPanel implements ActionListener, ItemListener {
 
@@ -53,14 +55,14 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
 	 */
 	private static final long serialVersionUID = 5679929137144915187L;
 
-	private JFrame frame;
+	JFrame frame;
 
 	private MenuBarFactory menuFac ;
 	
-	private Partie partie;
+	Partie partie;
 	
 	/** For displaynig msg. */
-	private JLabel hintBar = new JLabel(" ");
+	JLabel hintBar = new JLabel(" ");
 	
 	private ChartPanel cPanel;
 	
@@ -104,6 +106,7 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
+		// Menu action
 		if (event.getActionCommand().equals("Charger")) {
 			chargerPartie();
 		} 
@@ -112,7 +115,28 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
 		}
 		else if (event.getActionCommand().equals("Executer")) {
 			executerTour();
-		}		
+		}
+		else if (event.getActionCommand().equals("Sauver")) {
+			sauverPartie();
+		}
+		// Menu ordres
+		else if (event.getActionCommand().equals("Ajouter")) {
+			//OrdresDialog2.show(this);
+                        OrdresTableDialog dia = new OrdresTableDialog(frame, true) ;
+                        dia.setDonnees(partie.navires, partie.ordres, partie.minute);
+                        dia.setVisible(true);
+		}
+	}
+
+	private void sauverPartie() {
+		try {
+			// TODO: proposer un fileChooser.
+			partie.save();
+			hintBar.setText("Partie " + partie.nom + " sauvï¿½e avec succes");
+		} catch (IOException e) {
+			hintBar.setText(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	private void executerTour() {
@@ -142,7 +166,7 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
                 FileReader fr = new FileReader(file);
             	partie = Partie.creer(fr);
     			partie.save();
-    			hintBar.setText("Partie " + partie.nom + " créée avec succes");
+    			hintBar.setText("Partie " + partie.nom + " crï¿½ï¿½e avec succes");
 			} catch (FileNotFoundException e) {
 				hintBar.setText(e.getMessage());
 				e.printStackTrace();
@@ -181,6 +205,15 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
 				e.printStackTrace();
 			}
 		}
+             if (partie.ordres == null || partie.ordres.size() == 0) {
+                 for (Navire n : partie.navires) {
+                     // creation des 3 ordres pour le tour courant.
+                     partie.ordres.add(new Ordre(n.id, partie.minute));
+                     partie.ordres.add(new Ordre(n.id, partie.minute));
+                     partie.ordres.add(new Ordre(n.id, partie.minute));
+                     
+                 }
+             }
 	}
 
 	private void update() {
