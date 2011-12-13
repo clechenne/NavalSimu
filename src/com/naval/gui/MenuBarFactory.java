@@ -66,6 +66,9 @@ class MenuBarFactory {
 		menuItem = createMenuItem("Sauver", KeyEvent.VK_S, "Sauver la partie", false);
 		optionsActions.add(menuItem);
 		
+                menuItem = createMenuItem("Detecter", KeyEvent.VK_F, "Detection", false);
+		optionsActions.add(menuItem);
+                
 		return optionsActions;
 	}
 
@@ -98,6 +101,9 @@ class MenuBarFactory {
 		item = (JMenuItem) optionsActions.getMenuComponent(3);
 		item.setEnabled(true);
 		
+                item = (JMenuItem) optionsActions.getMenuComponent(4);
+		item.setEnabled(true);
+                
 		// Menu ordres
 		item = (JMenuItem) optionsOrdres.getMenuComponent(0);
 		item.setEnabled(true);

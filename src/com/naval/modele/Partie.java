@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -40,7 +39,6 @@ public class Partie implements Serializable {
     Partie() {
         navires = new ArrayList<Navire>();
         joueurs = new ArrayList<Joueur>();
-
     }
 
     public static Partie creer(Reader reader) throws IOException {
@@ -100,7 +98,7 @@ public class Partie implements Serializable {
     public void executerTour() throws IOException {
         prendreEnCompteLesOrdres();
 
-        // TODO : revoir car les ordres de mvt s'activent � la fin du tour.
+        // TODO : revoir car les ordres de mvt s'activent à la fin du tour.
 
         for (Navire n : navires) {
             n.bouge();
@@ -158,7 +156,7 @@ public class Partie implements Serializable {
                 Report.add(n.nom + " modification de cap:" + (n.cap + o.modificationCap));
                 n.cap += o.modificationCap;
             }
-            // 2.3.1.3 Acc�l�ration et d�c�l�ration
+            // 2.3.1.3 Accélération et décélération
             if (o.acceleration != 0) {
                 Report.add(n.nom + " modification de vitesse:" + (n.vitesse + o.acceleration));
                 n.vitesse += o.acceleration;
@@ -191,10 +189,10 @@ public class Partie implements Serializable {
         Partie partie = null;
 
         FileInputStream fis = new FileInputStream(nom);
-        // cr�ation d'un "flux objet" avec le flux fichier
+        // création d'un "flux objet" avec le flux fichier
         ObjectInputStream ois = new ObjectInputStream(fis);
         try {
-            // d�s�rialisation : lecture de l'objet depuis le flux d'entr�e
+            // désérialisation : lecture de l'objet depuis le flux d'entr�e
             partie = (Partie) ois.readObject();
         } finally {
             // on ferme les flux
@@ -220,7 +218,7 @@ public class Partie implements Serializable {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         try {
-            // s�rialisation : �criture de l'objet dans le flux de sortie
+            // sérialisation : écriture de l'objet dans le flux de sortie
             oos.writeObject(this);
             // on vide le tampon
             oos.flush();

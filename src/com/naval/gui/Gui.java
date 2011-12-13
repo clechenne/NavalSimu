@@ -46,7 +46,6 @@ import com.naval.modele.Navire;
 import com.naval.modele.Partie;
 import com.naval.ordres.Ordre;
 import com.naval.outils.Config;
-import java.util.ArrayList;
 
 public class Gui extends JPanel implements ActionListener, ItemListener {
 
@@ -124,6 +123,12 @@ public class Gui extends JPanel implements ActionListener, ItemListener {
 			//OrdresDialog2.show(this);
                         OrdresTableDialog dia = new OrdresTableDialog(frame, true) ;
                         dia.setDonnees(partie.navires, partie.ordres, partie.minute);
+                        dia.setVisible(true);
+		}
+                else if (event.getActionCommand().equals("Detecter")) {
+			//OrdresDialog2.show(this);
+                        VisibleDialog dia = new VisibleDialog(frame, true) ;
+                        dia.setDonnees(partie.navires, partie.visibilite);
                         dia.setVisible(true);
 		}
 	}
